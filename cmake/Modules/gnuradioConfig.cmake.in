@@ -1,32 +1,8 @@
-if(NOT PKG_CONFIG_FOUND)
-    INCLUDE(FindPkgConfig)
-endif()
-PKG_CHECK_MODULES(PC_GNURADIO gnuradio)
+set(@libname@_VERSION x.y.z)
 
-FIND_PATH(
-    GNURADIO_INCLUDE_DIRS
-    NAMES gnuradio/block.hh
-    HINTS $ENV{GNURADIO_DIR}/include
-        ${PC_GNURADIO_INCLUDEDIR}
-    PATHS ${CMAKE_INSTALL_PREFIX}/include
-          /usr/local/include
-          /usr/include
-)
+@PACKAGE_INIT@
 
-FIND_LIBRARY(
-    GNURADIO_LIBRARIES
-    NAMES cusp
-    HINTS $ENV{GNURADIO_DIR}/lib
-        ${PC_GNURADIO_LIBDIR}
-    PATHS ${CMAKE_INSTALL_PREFIX}/lib
-          ${CMAKE_INSTALL_PREFIX}/lib64
-          /usr/local/lib
-          /usr/local/lib64
-          /usr/lib
-          /usr/lib64
-          @libdir@
-          )
-
-INCLUDE(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(GNURADIO DEFAULT_MSG GNURADIO_LIBRARIES GNURADIO_INCLUDE_DIRS)
-MARK_AS_ADVANCED(GNURADIO_LIBRARIES GNURADIO_INCLUDE_DIRS)
+add_library(@libname@ SHARED IMPORTED)
+set_property(TARGET @libname@ PROPERTY IMPORTED_LOCATION @libdir@/@soname@)
+set_property(TARGET @libname@ PROPERTY IMPORTED_SONAME @soname@)
+target_include_directories(@libname@ INTERFACE @incdir@)

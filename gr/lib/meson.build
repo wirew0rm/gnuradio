@@ -268,6 +268,10 @@ prefix = '\ '.join(prefix_parts)
 
 cmake_conf = configuration_data()
 cmake_conf.set('libdir', join_paths(prefix,get_option('libdir')))
+cmake_conf.set('soname', 'libgnuradio-runtime.so')
+cmake_conf.set('incdir', join_paths(prefix,get_option('includedir')))
+cmake_conf.set('libname', 'gnuradio-runtime')
+
 cmake.configure_package_config_file(
   name : 'gnuradio-runtime',
   input : join_paths(meson.source_root(),'cmake','Modules','gnuradioConfig.cmake.in'),
